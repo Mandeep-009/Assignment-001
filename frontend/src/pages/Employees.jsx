@@ -14,6 +14,7 @@ const Employees = () => {
             const employees = await axios.get('http://localhost:5173/api/employees/all_employees');
             setData(employees.data);
             setLoaded(true);
+            setCount(data.length)
         }
         getData();
     },[])
@@ -22,7 +23,7 @@ const Employees = () => {
       <Logo />
       <Navbar />
       <div style={{display: 'flex', justifyContent: 'flex-end', padding: '10px'}}>
-        <span style={{margin: '1px 20px'}}>Total: {count}</span>
+        <span style={{margin: '1px 20px'}}>Total Count: {count}</span>
         <Link to='/add_employee'><button>Create Employee</button></Link>
       </div>
       <div>
@@ -30,31 +31,32 @@ const Employees = () => {
         <button>Search</button>
       </div>
       <br />
-      <div style={{display: 'flex', justifyContent: 'space-evenly', fontWeight: 'bold'}}>
-        <div>Id</div>
-        <div>Image</div>
-        <div>Name</div>
-        <div>Email</div>
-        <div>Mobile No.</div>
-        <div>Designation</div>
-        <div>Gender</div>
-        <div>Course</div>
-        <div>Create Date</div>
-        <div>Action</div>
+      <div style={{display: 'flex', fontWeight: 'bold'}}>
+        <div style={{width:'90px'}}>Id</div>
+        <div style={{width:'100px'}}>Image</div>
+        <div style={{width:'100px'}}>Name</div>
+        <div style={{width:'300px'}}>Email</div>
+        <div style={{width:'100px'}}>Mobile No.</div>
+        <div style={{width:'130px'}}>Designation</div>
+        <div style={{width:'90px'}}>Gender</div>
+        <div style={{width:'90px'}}>Course</div>
+        <div style={{width:'130px'}}>Create Date</div>
+        <div style={{width:'90px'}}>Action</div>
       </div>
+      <hr />
       {loaded?(data.map((employee,index)=>{
             return (
-                <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
-                    <div>{employee.employee_id}</div>
-                    <div>no image</div>
-                    <div>{employee.name}</div>
-                    <div>{employee.email}</div>
-                    <div>{employee.mobile}</div>
-                    <div>{employee.designation}</div>
-                    <div>{employee.gender}</div>
-                    <div>{employee.course}</div>
-                    <div>{employee.create_date}</div>
-                    <div><button>Edit</button><button>Delete</button></div>
+                <div style={{display: 'flex'}}>
+                    <div style={{width:'90px'}}>{employee.employee_id}</div>
+                    <div style={{width:'100px'}}>no image</div>
+                    <div style={{width:'100px'}}>{employee.name}</div>
+                    <div style={{width:'300px'}}>{employee.email}</div>
+                    <div style={{width:'100px'}}>{employee.mobile}</div>
+                    <div style={{width:'130px'}}>{employee.designation}</div>
+                    <div style={{width:'90px'}}>{employee.gender}</div>
+                    <div style={{width:'90px'}}>{employee.course}</div>
+                    <div style={{width:'130px'}}>{employee.create_date.substring(0,10)}</div>
+                    <div style={{width:'90px'}}><button>Edit</button><button>Delete</button></div>
                 </div>
             )
         })
