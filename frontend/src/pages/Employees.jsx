@@ -47,7 +47,7 @@ const Employees = () => {
       setTimeout(() => {
         setLoaded(true);
         setSearched(true);
-      }, 1000);
+      }, 100);
     
       
     }
@@ -79,6 +79,27 @@ const Employees = () => {
         sortbyID()
       }
     }
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    const currentItems = data.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+
+    const handlePageChange = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    };
+
+    const handleNextPage = () => {
+      setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    };
+
+    const handlePrevPage = () => {
+      setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
     
     useEffect(()=>{
         const getData = async ()=>{
@@ -132,7 +153,7 @@ const Employees = () => {
       <button onClick={sortbyname}>Sort by name</button>
       <button onClick={sortbyID}>Sort by id</button> */}
       <hr />
-      {(loaded&&!searched)?(data.map((employee,index)=>{
+      {(loaded&&!searched)?(currentItems.map((employee,index)=>{
             return (<div style={{display: 'flex'}}>
                     <div style={{width:'90px'}}>{employee.employee_id}</div>
                     <div style={{width:'100px'}}>
@@ -173,6 +194,23 @@ const Employees = () => {
                 </div>
         )
       })):(null)}
+      {loaded&&!searched&&<div>
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            disabled={currentPage === index + 1}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>}
     </div>
   )
 }
