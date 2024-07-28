@@ -5,6 +5,7 @@ import { PORT , MONGODB_URL } from "./config.js";
 import adminRouter from "./routes/admin.js";
 import employeeRouter from "./routes/employee.js";
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());

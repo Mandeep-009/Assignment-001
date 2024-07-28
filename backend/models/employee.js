@@ -9,7 +9,7 @@ const employeeSchema = new mongoose.Schema({
     gender: { type: String, required: true},
     course: { type: String, required: true},
     create_date: { type: Date, default: Date.now},
-    // image
+    image: { type: String, default: "" }
 })
 
 const Employee = mongoose.model('employees',employeeSchema);
