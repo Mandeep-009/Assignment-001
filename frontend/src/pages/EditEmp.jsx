@@ -94,7 +94,7 @@ const EditEmp = () => {
                 <div>Course</div>
                 <div style={{margin: '5px 0 15px 0'}}><input type="text" value={course} onChange={(e)=>setCourse(e.target.value)}/></div>
                 <div>Image upload</div>
-                <div style={{margin: '5px 0 15px 0'}}><input type="file" accept='image/'name='image' onChange={(e)=>setImage(e.target.files[0])}/></div>
+                <div style={{margin: '5px 0 15px 0'}}><input type="file" accept='.jpg,.png' name='image' onChange={(e)=>setImage(e.target.files[0])}/></div>
                 <div><button style={{margin: '15px', width: '80px'}} onClick={submitHandler}>Submit</button></div>
             </div>
         </div>

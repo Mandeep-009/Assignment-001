@@ -5,9 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Employees = () => {
+
     const [count,setCount] = useState(0);
     const [data,setData] = useState([]);
     const [loaded,setLoaded] = useState(false);
+    const [query,setQuery] = useState('');
+    const [queriedArray,setQueriedArray] = useState([]);
+    const [searched,setSearched] = useState(false);
+    const [parameter,setParameter] = useState('');
 
     const deleteEmployee = async (mail) => {
       try {
@@ -21,6 +26,57 @@ const Employees = () => {
         else{
           console.log(error)
         }
+      }
+    }
+
+    const searchHandler = () => {
+      
+      if(!query) return alert('please enter some query to search');
+      
+      
+      for(let i=0;i<count;i++){
+        if(data[i].email == query ||
+            data[i].name == query ||
+            data[i].designation == query ||
+            data[i].mobile == query ||
+            data[i].employee_id == query
+        ){
+          setQueriedArray([...queriedArray,data[i]]);
+        }
+      }
+      setTimeout(() => {
+        setLoaded(true);
+        setSearched(true);
+      }, 1000);
+    
+      
+    }
+
+    const sortbydate = () => {
+      const sortedData = [...data].sort((a, b) => new Date(b.create_date) - new Date(a.create_date));
+      setData(sortedData);
+    }
+
+    const sortbyname = () => {
+      const sortedData = [...data].sort((a, b) => a.name.localeCompare(b.name));
+      setData(sortedData);
+    }
+
+    const sortbyID = () => {
+      const sortedData = [...data].sort((a, b) => a.employee_id - b.employee_id);
+      setData(sortedData);
+    }
+
+    const handleSort = (e) => {
+      e.preventDefault();
+      if(parameter == "create_date") {
+        sortbydate()
+      }
+      else if (parameter == "name") {
+        sortbyname()
+      }
+      else if (parameter == "employee_id") {
+        sortbyID()
       }
     }
     
@@ -41,9 +97,23 @@ const Employees = () => {
         <span style={{margin: '1px 20px'}}>Total Count: {count}</span>
         <Link to='/add_employee'><button>Create Employee</button></Link>
       </div>
-      <div>
-        <input type="text" placeholder="Enter search keyword" />
-        <button>Search</button>
+      <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
+        <div>
+          <input type="text" placeholder="Enter search keyword" onChange={(e)=>setQuery(e.target.value)}/>
+          <button onClick={searchHandler}>Search</button>
+        </div>
+        <div>
+          <form onSubmit={handleSort}>
+            <label htmlFor="sort">Sort By: </label>
+            <select id="parameters" name="parameters" value={parameter} onChange={(e)=>setParameter(e.target.value)}>
+            <option value="">--Please choose an option--</option>
+              <option value="create_date">Create Date</option>
+              <option value="name" >Name</option>
+              <option value="employee_id" >Employee ID</option>
+            </select>
+            <input type="submit" value="Apply" />
+          </form>
+        </div>
       </div>
       <br />
       <div style={{display: 'flex', fontWeight: 'bold'}}>
@@ -58,10 +128,12 @@ const Employees = () => {
         <div style={{width:'130px'}}>Create Date</div>
         <div style={{width:'90px'}}>Action</div>
       </div>
+      {/* <button onClick={sortbydate}>Sort by date created</button>
+      <button onClick={sortbyname}>Sort by name</button>
+      <button onClick={sortbyID}>Sort by id</button> */}
       <hr />
-      {loaded?(data.map((employee,index)=>{
-            return (
-                <div style={{display: 'flex'}}>
+      {(loaded&&!searched)?(data.map((employee,index)=>{
+            return (<div style={{display: 'flex'}}>
                     <div style={{width:'90px'}}>{employee.employee_id}</div>
                     <div style={{width:'100px'}}>
                       {employee.image ? (<img src={employee.image} height={30} width={30}/>):'no image'}
@@ -81,6 +153,26 @@ const Employees = () => {
             )
         })
       ):(null)}
+      {(loaded&&searched)?(queriedArray.map((employee,index)=>{
+        return (<div style={{display: 'flex'}}>
+                    <div style={{width:'90px'}}>{employee.employee_id}</div>
+                    <div style={{width:'100px'}}>
+                      {employee.image ? (<img src={employee.image} height={30} width={30}/>):'no image'}
+                    </div>
+                    <div style={{width:'100px'}}>{employee.name}</div>
+                    <div style={{width:'300px'}}>{employee.email}</div>
+                    <div style={{width:'100px'}}>{employee.mobile}</div>
+                    <div style={{width:'130px'}}>{employee.designation}</div>
+                    <div style={{width:'90px'}}>{employee.gender}</div>
+                    <div style={{width:'90px'}}>{employee.course}</div>
+                    <div style={{width:'130px'}}>{employee.create_date.substring(0,10)}</div>
+                    <div style={{width:'90px'}}>
+                      <Link to={`/edit_employee/${employee.email}`}><button>Edit</button></Link>
+                      <button onClick={()=>deleteEmployee(employee.email)}>Delete</button>
+                    </div>
+                </div>
+        )
+      })):(null)}
     </div>
   )
 }
