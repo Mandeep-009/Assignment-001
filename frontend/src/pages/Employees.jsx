@@ -36,22 +36,23 @@ const Employees = () => {
       setQueriedArray([])
       
       for(let i=0;i<count;i++){
-        if(data[i].email == query ||
-            data[i].name == query ||
-            data[i].designation == query ||
+        if(data[i].email === query ||
+            data[i].name === query ||
+            data[i].designation === query ||
             data[i].mobile == query ||
-            data[i].employee_id == query
+            data[i].employee_id === query
         ){
-          setQueriedArray([...queriedArray,data[i]]);
+          setQueriedArray(prevArray => [...prevArray,data[i]]);
         }
       }
-      setTimeout(() => {
-        setLoaded(true);
-        setSearched(true);
-      }, 100);
-    
-      
     }
+
+    useEffect(()=>{
+      if(queriedArray.length>0){
+        setLoaded(true)
+        setSearched(true)
+      }
+    },[queriedArray])
 
     const sortbydate = () => {
       const sortedData = [...data].sort((a, b) => new Date(b.create_date) - new Date(a.create_date));
