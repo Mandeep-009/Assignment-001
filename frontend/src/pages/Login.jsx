@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Logo from '../components/Logo'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { bakckend_url } from '../config';
 
 const Login = () => {
     const [username,setUsername] = useState('');
@@ -12,7 +13,7 @@ const Login = () => {
       try {
         if(username==='' || password==='')
           return window.alert('Fill all fields: username and password');
-        const response = await axios.post('http://localhost:5173/api/auth/login',{username,password});
+        const response = await axios.post(`${bakckend_url}/api/auth/login`,{username,password});
         if(response) {
           localStorage.setItem("username",username);
           navigate('/dashboard');

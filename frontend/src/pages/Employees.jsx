@@ -3,6 +3,7 @@ import Logo from '../components/Logo';
 import Navbar from '../components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { bakckend_url } from '../config';
 
 const Employees = () => {
 
@@ -16,7 +17,7 @@ const Employees = () => {
 
     const deleteEmployee = async (mail) => {
       try {
-        const response = await axios.delete(`http://localhost:5173/api/employees/${mail}`)
+        const response = await axios.delete(`${bakckend_url}/api/employees/${mail}`)
         alert(response.data.message);
         window.location.reload()
       } catch (error) {
@@ -32,7 +33,7 @@ const Employees = () => {
     const searchHandler = () => {
       
       if(!query) return alert('please enter some query to search');
-      
+      setQueriedArray([])
       
       for(let i=0;i<count;i++){
         if(data[i].email == query ||
@@ -103,7 +104,7 @@ const Employees = () => {
     
     useEffect(()=>{
         const getData = async ()=>{
-            const employees = await axios.get('http://localhost:5173/api/employees/all_employees');
+            const employees = await axios.get(`${bakckend_url}/api/employees/all_employees`);
             setData(employees.data);
             setLoaded(true);
             setCount(employees.data.length)

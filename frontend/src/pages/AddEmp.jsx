@@ -3,6 +3,7 @@ import Logo from '../components/Logo'
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { bakckend_url } from '../config'
 
 const AddEmp = () => {
     const [name,setName] = useState('');
@@ -19,7 +20,7 @@ const AddEmp = () => {
     
       const submitHandler = async (e) => {
 
-        if(!(name&&email&&designation&&mobile&&course&&gender&&employee_id)){
+        if(!(name && email && designation && mobile && course && gender && employee_id)){
           return alert('fill all fields')
         }
         if(!mobile.match(/^\d+$/)){
@@ -38,7 +39,7 @@ const AddEmp = () => {
         formData.append('employee_id', employee_id);
   
         try {
-          const response = await axios.post(`http://localhost:5173/api/employees/new_employee`, formData, {
+          const response = await axios.post(`${bakckend_url}/api/employees/new_employee`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },

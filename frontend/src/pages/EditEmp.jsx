@@ -3,6 +3,7 @@ import Logo from '../components/Logo'
 import Navbar from '../components/Navbar'
 import React , { useEffect, useState } from 'react'
 import axios from 'axios'
+import { bakckend_url } from '../config'
 
 const EditEmp = () => {
     const {id} = useParams()
@@ -19,7 +20,7 @@ const EditEmp = () => {
 
     useEffect(()=>{
       const fetchData = async () => {
-        const {data} = await axios.get(`http://localhost:5173/api/employees/employee/${id}`)
+        const {data} = await axios.get(`${bakckend_url}/api/employees/employee/${id}`)
         setEmail(data.email)
         setName(data.name)
         setMobile(data.mobile)
@@ -54,7 +55,7 @@ const EditEmp = () => {
       formData.append('employee_id', employee_id);
 
       try {
-        const response = await axios.put(`http://localhost:5173/api/employees/edit_employee/${id}`, formData, {
+        const response = await axios.put(`${bakckend_url}/api/employees/edit_employee/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

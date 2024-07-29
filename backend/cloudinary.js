@@ -1,13 +1,17 @@
 import {v2 as cloudinary} from 'cloudinary';
 import fs from 'fs';
+import { config } from 'dotenv';
+import { API_KEY, API_SECRET, CLOUD_NAME } from './config.js';
+
 
 
 export const uploadOnCloudinary = async (localfilepath) => {
     try {
+        config();
         cloudinary.config({
-            cloud_name: 'dpbmy09rz', 
-            api_key: '973749879693444', 
-            api_secret: 'HdfFBP9gO9O1tRhZNrwLZmtkUG4'
+            cloud_name: CLOUD_NAME, 
+            api_key: API_KEY, 
+            api_secret: API_SECRET
         })
         
         if(!localfilepath) return null;
